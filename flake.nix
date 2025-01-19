@@ -1,7 +1,7 @@
 {
   description = "GUSbase";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -23,20 +23,19 @@
 
           R-with-GUSbase = with pkgs;
             rWrapper.override {
-              packages = with rPackages;
-                [ GUSbase ];
+              packages = [ GUSbase ];
             };
         in
-          with pkgs;
-          {
-            devShells.default = mkShell {
-              buildInputs = [ R-with-GUSbase ];
-              shellHook = ''
-            mkdir -p "$(pwd)/_libs"
-            export R_LIBS_USER="$(pwd)/_libs"
-          '';
-            };
+        with pkgs;
+        {
+          devShells.default = mkShell {
+            buildInputs = [ R-with-GUSbase ];
+            shellHook = ''
+              mkdir -p "$(pwd)/_libs"
+              export R_LIBS_USER="$(pwd)/_libs"
+            '';
+          };
 
-            packages.default = GUSbase;
-          });
+          packages.default = GUSbase;
+        });
 }
